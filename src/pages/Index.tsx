@@ -4,6 +4,7 @@ import { Shield, Zap, Globe, Code, Smartphone, Brain, Lock, Cloud, Database, Box
 import { Button } from "@/components/ui/button";
 import SectionHeader from "@/components/shared/SectionHeader";
 import heroBg from "@/assets/hero-bg.jpg";
+import ProjectLifecycleScenario from "@/components/ProjectLifecycleScenario";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
@@ -184,6 +185,9 @@ const Index = () => {
           </div>
         </div>
       </section>
+
+      {/* Project Lifecycle Scenario */}
+      <ProjectLifecycleScenario />
 
       {/* Industries */}
       <section className="section-padding bg-secondary/30">
