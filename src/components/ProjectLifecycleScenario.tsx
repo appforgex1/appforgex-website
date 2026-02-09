@@ -1,4 +1,3 @@
-
 import React from "react";
 import { motion } from "framer-motion";
 import {
@@ -23,6 +22,7 @@ import {
 import { Button } from "@/components/ui/button";
 import SectionHeader from "@/components/shared/SectionHeader";
 import { Link } from "react-router-dom";
+import { fadeInUp, staggerContainer, scaleOnHover, buttonGlow } from "@/utils/animations";
 
 const timelineSteps = [
     {
@@ -163,25 +163,16 @@ const ProjectLifecycleScenario = () => {
                         {timelineSteps.map((step, index) => (
                             <motion.div
                                 key={step.id}
-                                initial={{ opacity: 0, y: 30 }}
-                                whileInView={{ opacity: 1, y: 0 }}
+                                initial="hidden"
+                                whileInView="visible"
                                 viewport={{ once: true, margin: "-100px" }}
-                                transition={{ duration: 0.5, delay: index * 0.1 }}
+                                variants={fadeInUp}
+                                custom={index}
                                 className={`flex flex-col lg:flex-row items-center gap-8 lg:gap-16 ${index % 2 === 0 ? "lg:flex-row-reverse" : ""
                                     }`}
                             >
                                 {/* Content Side */}
                                 <div className="flex-1 w-full lg:text-right">
-                                    {index % 2 === 0 ? (
-                                        <div className="hidden lg:block">
-                                            {/* Right Side Content for Even Index (flipped) means Text is on Left? No wait.
-                             lg:flex-row-reverse means Right is First (Content), Left is Second (Visual).
-                             So Content is on Right.
-                             Actually let's just use standard logic and adjust text alignment.
-                         */}
-                                        </div>
-                                    ) : null}
-
                                     <div className={`p-6 rounded-xl border border-border bg-card/50 backdrop-blur-sm hover:border-primary/30 transition-all duration-300 ${index % 2 !== 0 ? "lg:text-right" : "lg:text-left"}`}>
                                         <div className={`flex items-center gap-3 mb-4 ${index % 2 !== 0 ? "lg:flex-row-reverse" : ""}`}>
                                             <div className={`p-2.5 rounded-lg ${step.bg} ${step.color}`}>
@@ -209,9 +200,12 @@ const ProjectLifecycleScenario = () => {
                                     </div>
                                 </div>
 
-                                {/* Visual Side (Placeholder for now, can be replaced with images) */}
+                                {/* Visual Side */}
                                 <div className="flex-1 w-full">
-                                    <div className={`glass-panel p-6 rounded-xl flex items-center justify-center min-h-[200px] border border-border/50 bg-secondary/20 relative overflow-hidden group`}>
+                                    <motion.div
+                                        whileHover={scaleOnHover}
+                                        className={`glass-panel p-6 rounded-xl flex items-center justify-center min-h-[200px] border border-border/50 bg-secondary/20 relative overflow-hidden group`}
+                                    >
                                         {/* Abstract Visual Representation */}
                                         <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-50 group-hover:opacity-100 transition-opacity" />
                                         <div className="text-center relative z-10">
@@ -224,7 +218,7 @@ const ProjectLifecycleScenario = () => {
                                             {step.id === 'delivery' && <Rocket className="w-16 h-16 text-muted-foreground/20 mx-auto mb-2" />}
                                             <span className="text-sm font-mono text-muted-foreground/60 uppercase tracking-widest">{step.visual}</span>
                                         </div>
-                                    </div>
+                                    </motion.div>
                                 </div>
                             </motion.div>
                         ))}
@@ -234,20 +228,21 @@ const ProjectLifecycleScenario = () => {
                 {/* Business Impact Section */}
                 <div className="mt-24 pt-12 border-t border-border">
                     <div className="text-center mb-12">
-                        <h3 className="text-2xl font-bold text-foreground mb-4">Real Business Impact</h3>
-                        <p className="text-muted-foreground max-w-2xl mx-auto">
-                            Our engineering standards don't just look good on paper—they drive measurable results for our clients.
-                        </p>
+                        <SectionHeader label="Business Value" title="Real Business Impact" description="Our engineering standards don't just look good on paper—they drive measurable results." />
                     </div>
 
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+                    <motion.div
+                        initial="hidden"
+                        whileInView="visible"
+                        viewport={{ once: true }}
+                        variants={staggerContainer}
+                        className="grid grid-cols-2 md:grid-cols-4 gap-6"
+                    >
                         {impactMetrics.map((metric, i) => (
                             <motion.div
                                 key={i}
-                                initial={{ opacity: 0, scale: 0.9 }}
-                                whileInView={{ opacity: 1, scale: 1 }}
-                                viewport={{ once: true }}
-                                transition={{ delay: i * 0.1 }}
+                                variants={fadeInUp}
+                                whileHover={scaleOnHover}
                                 className="p-6 rounded-xl bg-card border border-border text-center hover:border-primary/50 transition-colors"
                             >
                                 <metric.icon className="w-8 h-8 mx-auto mb-4 text-primary" />
@@ -255,7 +250,7 @@ const ProjectLifecycleScenario = () => {
                                 <div className="text-sm text-muted-foreground font-medium">{metric.label}</div>
                             </motion.div>
                         ))}
-                    </div>
+                    </motion.div>
                 </div>
 
                 {/* CTA */}
@@ -270,15 +265,19 @@ const ProjectLifecycleScenario = () => {
                     </p>
                     <div className="flex flex-col sm:flex-row gap-4 justify-center relative z-10">
                         <Link to="/contact">
-                            <Button size="lg" className="gradient-primary text-primary-foreground border-0 hover:opacity-90 w-full sm:w-auto">
-                                Start Your Project
-                                <ArrowRight className="ml-2 w-4 h-4" />
-                            </Button>
+                            <motion.div whileHover="hover" whileTap="tap" variants={buttonGlow}>
+                                <Button size="lg" className="gradient-primary text-primary-foreground border-0 px-8 glow-on-hover w-full sm:w-auto">
+                                    Start Your Project
+                                    <ArrowRight className="ml-2 w-4 h-4" />
+                                </Button>
+                            </motion.div>
                         </Link>
-                        <Link to="/consultation">
-                            <Button size="lg" variant="outline" className="border-primary/20 hover:bg-secondary w-full sm:w-auto">
-                                Request Technical Consultation
-                            </Button>
+                        <Link to="/contact">
+                            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                                <Button size="lg" variant="outline" className="border-primary/20 hover:bg-secondary w-full sm:w-auto">
+                                    Request Technical Consultation
+                                </Button>
+                            </motion.div>
                         </Link>
                     </div>
                 </div>

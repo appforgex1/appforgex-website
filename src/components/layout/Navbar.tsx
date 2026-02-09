@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -16,13 +16,34 @@ const navLinks = [
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
 
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 20) {
+        setScrolled(true);
+      } else {
+        setScrolled(false);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 glass">
-      <div className="container mx-auto flex items-center justify-between h-16 px-4 lg:px-8">
+    <nav
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? "glass shadow-sm py-2" : "bg-transparent py-4"
+        }`}
+    >
+      <div className="container mx-auto flex items-center justify-between px-4 lg:px-8">
         <Link to="/" className="flex items-center gap-2">
-          <img src="/appforgex-logo.png" alt="AppforgeX" className="h-14 w-auto" />
+          <img
+            src="/appforgex-logo.png"
+            alt="AppforgeX"
+            className={`transition-all duration-300 ${scrolled ? "h-12" : "h-16"} w-auto`}
+          />
         </Link>
 
         {/* Desktop */}
@@ -31,19 +52,30 @@ const Navbar = () => {
             <Link
               key={link.to}
               to={link.to}
-              className={`px-3 py-2 text-sm font-medium rounded-md transition-colors ${location.pathname === link.to
-                ? "text-primary"
-                : "text-muted-foreground hover:text-foreground"
+              className={`relative px-3 py-2 text-sm font-medium rounded-md transition-colors ${location.pathname === link.to
+                  ? "text-primary"
+                  : "text-muted-foreground hover:text-foreground"
                 }`}
             >
               {link.label}
+              {location.pathname === link.to && (
+                <motion.div
+                  layoutId="navbar-indicator"
+                  className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary rounded-full"
+                  initial={false}
+                  transition={{ type: "spring", stiffness: 500, damping: 30 }}
+                />
+              )}
             </Link>
           ))}
         </div>
 
         <div className="hidden lg:block">
           <Link to="/contact">
-            <Button size="sm" className="gradient-primary text-primary-foreground border-0 hover:opacity-90">
+            <Button
+              size="sm"
+              className="gradient-primary text-primary-foreground border-0 hover:opacity-90 shadow-lg hover:shadow-primary/20 transition-all duration-300"
+            >
               Get a Consultation
             </Button>
           </Link>
@@ -75,8 +107,8 @@ const Navbar = () => {
                   to={link.to}
                   onClick={() => setOpen(false)}
                   className={`px-3 py-2 text-sm font-medium rounded-md transition-colors ${location.pathname === link.to
-                    ? "text-primary"
-                    : "text-muted-foreground hover:text-foreground"
+                      ? "text-primary bg-primary/10"
+                      : "text-muted-foreground hover:text-foreground"
                     }`}
                 >
                   {link.label}

@@ -7,7 +7,7 @@ const Footer = () => (
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
         {/* Brand */}
         <div>
-          <Link to="/" className="inline-block mb-3">
+          <Link to="/" className="inline-block mb-3 hover:scale-105 transition-transform duration-300">
             <img src="/appforgex-logo.png" alt="AppforgeX" className="h-20 w-auto" />
           </Link>
           <p className="mt-3 text-sm text-muted-foreground leading-relaxed">

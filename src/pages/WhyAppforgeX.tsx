@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { ShieldCheck, Users, Zap, DollarSign, HeadphonesIcon, Code2, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import SectionHeader from "@/components/shared/SectionHeader";
+import { fadeInUp, staggerContainer, scaleOnHover, buttonGlow } from "@/utils/animations";
 
 const advantages = [
   { icon: Code2, title: "Expert Execution", desc: "Our team brings deep expertise across the full stack. We don't experiment on your project — we execute with precision." },
@@ -18,9 +19,9 @@ const WhyAppforgeX = () => (
     <section className="section-padding">
       <div className="container mx-auto px-4 lg:px-8">
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
+          initial="hidden"
+          animate="visible"
+          variants={fadeInUp}
           className="max-w-3xl mb-16"
         >
           <span className="text-xs font-semibold tracking-widest uppercase text-primary mb-3 block">Why AppforgeX</span>
@@ -32,14 +33,18 @@ const WhyAppforgeX = () => (
           </p>
         </motion.div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          variants={staggerContainer}
+          className="grid md:grid-cols-2 lg:grid-cols-3 gap-6"
+        >
           {advantages.map((a, i) => (
             <motion.div
               key={i}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.1, duration: 0.5 }}
+              variants={fadeInUp}
+              whileHover={scaleOnHover}
               className="p-6 rounded-xl border border-border bg-card hover:border-primary/30 transition-colors"
             >
               <div className="p-2.5 rounded-md bg-primary/10 inline-block mb-4">
@@ -49,15 +54,23 @@ const WhyAppforgeX = () => (
               <p className="text-sm text-muted-foreground leading-relaxed">{a.desc}</p>
             </motion.div>
           ))}
-        </div>
+        </motion.div>
 
-        <div className="mt-16 text-center">
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          variants={fadeInUp}
+          className="mt-16 text-center"
+        >
           <Link to="/contact">
-            <Button size="lg" className="gradient-primary text-primary-foreground border-0 hover:opacity-90">
-              Work With Us <ArrowRight className="ml-2" size={18} />
-            </Button>
+            <motion.div whileHover="hover" whileTap="tap" variants={buttonGlow} className="inline-block">
+              <Button size="lg" className="gradient-primary text-primary-foreground border-0 hover:opacity-90">
+                Work With Us <ArrowRight className="ml-2" size={18} />
+              </Button>
+            </motion.div>
           </Link>
-        </div>
+        </motion.div>
       </div>
     </section>
   </main>

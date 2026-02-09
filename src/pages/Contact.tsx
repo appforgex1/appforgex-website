@@ -1,11 +1,13 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Mail, Phone, MapPin, MessageCircle, Send } from "lucide-react";
+import { Mail, Phone, MapPin, MessageCircle, Send, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { z } from "zod";
+import { fadeInUp, staggerContainer, buttonGlow } from "@/utils/animations";
 
 const contactSchema = z.object({
   name: z.string().trim().min(1, "Name is required").max(100),
@@ -44,13 +46,14 @@ const Contact = () => {
     <main className="pt-20">
       <section className="section-padding">
         <div className="container mx-auto px-4 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-12">
+          <motion.div
+            initial="hidden"
+            animate="visible"
+            variants={staggerContainer}
+            className="grid lg:grid-cols-2 gap-12"
+          >
             {/* Info */}
-            <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6 }}
-            >
+            <motion.div variants={fadeInUp}>
               <span className="text-xs font-semibold tracking-widest uppercase text-primary mb-3 block">Contact Us</span>
               <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-6">
                 Let's Build <span className="text-gradient">Together</span>
@@ -60,34 +63,36 @@ const Contact = () => {
               </p>
 
               <div className="space-y-5">
-                <a href="mailto:hello@appforgex.com" className="flex items-center gap-3 text-foreground hover:text-primary transition-colors">
-                  <div className="p-2.5 rounded-md bg-primary/10"><Mail size={18} className="text-primary" /></div>
-                  <div>
-                    <div className="text-sm font-medium">Email</div>
-                    <div className="text-sm text-muted-foreground">hello@appforgex.com</div>
+                {[
+                  { icon: Mail, label: "Email", value: "hello@appforgex.com", href: "mailto:hello@appforgex.com" },
+                  { icon: MessageCircle, label: "WhatsApp", value: "Chat with us directly", href: "https://wa.me/1234567890" },
+                  { icon: Phone, label: "Phone", value: "+1 (234) 567-890", href: null },
+                  { icon: MapPin, label: "Location", value: "Serving clients globally", href: null }
+                ].map((item, i) => (
+                  <div key={i} className="flex items-center gap-3">
+                    {item.href ? (
+                      <a href={item.href} className="flex items-center gap-3 text-foreground hover:text-primary transition-colors w-full group">
+                        <div className="p-2.5 rounded-md bg-primary/10 group-hover:bg-primary/20 transition-colors">
+                          <item.icon size={18} className="text-primary" />
+                        </div>
+                        <div>
+                          <div className="text-sm font-medium">{item.label}</div>
+                          <div className="text-sm text-muted-foreground">{item.value}</div>
+                        </div>
+                      </a>
+                    ) : (
+                      <div className="flex items-center gap-3 w-full">
+                        <div className="p-2.5 rounded-md bg-primary/10">
+                          <item.icon size={18} className="text-primary" />
+                        </div>
+                        <div>
+                          <div className="text-sm font-medium">{item.label}</div>
+                          <div className="text-sm text-muted-foreground">{item.value}</div>
+                        </div>
+                      </div>
+                    )}
                   </div>
-                </a>
-                <a href="https://wa.me/1234567890" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 text-foreground hover:text-primary transition-colors">
-                  <div className="p-2.5 rounded-md bg-primary/10"><MessageCircle size={18} className="text-primary" /></div>
-                  <div>
-                    <div className="text-sm font-medium">WhatsApp</div>
-                    <div className="text-sm text-muted-foreground">Chat with us directly</div>
-                  </div>
-                </a>
-                <div className="flex items-center gap-3">
-                  <div className="p-2.5 rounded-md bg-primary/10"><Phone size={18} className="text-primary" /></div>
-                  <div>
-                    <div className="text-sm font-medium">Phone</div>
-                    <div className="text-sm text-muted-foreground">+1 (234) 567-890</div>
-                  </div>
-                </div>
-                <div className="flex items-center gap-3">
-                  <div className="p-2.5 rounded-md bg-primary/10"><MapPin size={18} className="text-primary" /></div>
-                  <div>
-                    <div className="text-sm font-medium">Location</div>
-                    <div className="text-sm text-muted-foreground">Serving clients globally</div>
-                  </div>
-                </div>
+                ))}
               </div>
 
               <div className="mt-8 p-4 rounded-lg border border-border bg-card">
@@ -98,11 +103,7 @@ const Contact = () => {
             </motion.div>
 
             {/* Form */}
-            <motion.div
-              initial={{ opacity: 0, x: 30 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6 }}
-            >
+            <motion.div variants={fadeInUp}>
               <form onSubmit={handleSubmit} className="p-6 md:p-8 rounded-xl border border-border bg-card space-y-5">
                 <div>
                   <label htmlFor="name" className="text-sm font-medium text-foreground block mb-1.5">Full Name *</label>
@@ -123,12 +124,15 @@ const Contact = () => {
                   <Textarea id="message" rows={5} value={form.message} onChange={(e) => update("message", e.target.value)} placeholder="Tell us about your project, goals, and timeline..." className="bg-secondary border-border resize-none" />
                   {errors.message && <p className="text-xs text-destructive mt-1">{errors.message}</p>}
                 </div>
-                <Button type="submit" className="w-full gradient-primary text-primary-foreground border-0 hover:opacity-90">
-                  Send Message <Send className="ml-2" size={16} />
-                </Button>
+
+                <motion.div whileHover="hover" whileTap="tap" variants={buttonGlow} className="w-full">
+                  <Button type="submit" className="w-full gradient-primary text-primary-foreground border-0 hover:opacity-90">
+                    Send Message <Send className="ml-2" size={16} />
+                  </Button>
+                </motion.div>
               </form>
             </motion.div>
-          </div>
+          </motion.div>
         </div>
       </section>
     </main>

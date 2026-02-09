@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { Target, Eye, ShieldCheck, Zap, Globe, Award } from "lucide-react";
 import SectionHeader from "@/components/shared/SectionHeader";
+import { fadeInUp, staggerContainer, scaleOnHover } from "@/utils/animations";
 
 const values = [
   { icon: Award, title: "Quality", desc: "We deliver production-grade code and design that meet the highest standards." },
@@ -15,9 +16,9 @@ const About = () => (
     <section className="section-padding">
       <div className="container mx-auto px-4 lg:px-8">
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
+          initial="hidden"
+          animate="visible"
+          variants={fadeInUp}
           className="max-w-3xl"
         >
           <span className="text-xs font-semibold tracking-widest uppercase text-primary mb-3 block">About Us</span>
@@ -33,17 +34,21 @@ const About = () => (
 
     {/* Mission & Vision */}
     <section className="section-padding bg-secondary/30">
-      <div className="container mx-auto px-4 lg:px-8 grid md:grid-cols-2 gap-8">
+      <motion.div
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true }}
+        variants={staggerContainer}
+        className="container mx-auto px-4 lg:px-8 grid md:grid-cols-2 gap-8"
+      >
         {[
           { icon: Target, label: "Our Mission", text: "To empower organizations with secure, scalable, and beautifully engineered digital solutions that accelerate growth and build lasting competitive advantage." },
           { icon: Eye, label: "Our Vision", text: "To become the most trusted technology partner for businesses worldwide — known for integrity, execution excellence, and relentless focus on client outcomes." },
         ].map((item, i) => (
           <motion.div
             key={i}
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: i * 0.15, duration: 0.5 }}
+            variants={fadeInUp}
+            whileHover={scaleOnHover}
             className="p-8 rounded-xl border border-border bg-card"
           >
             <div className="p-2.5 rounded-md gradient-primary inline-block mb-4">
@@ -53,7 +58,7 @@ const About = () => (
             <p className="text-muted-foreground leading-relaxed">{item.text}</p>
           </motion.div>
         ))}
-      </div>
+      </motion.div>
     </section>
 
     {/* Problem We Solve */}
@@ -71,14 +76,18 @@ const About = () => (
     <section className="section-padding bg-secondary/30">
       <div className="container mx-auto px-4 lg:px-8">
         <SectionHeader label="Core Values" title="What Drives Us" />
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          variants={staggerContainer}
+          className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6"
+        >
           {values.map((v, i) => (
             <motion.div
               key={i}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.1, duration: 0.5 }}
+              variants={fadeInUp}
+              whileHover={scaleOnHover}
               className="p-6 rounded-lg border border-border bg-card text-center"
             >
               <div className="p-3 rounded-md bg-primary/10 inline-block mb-4">
@@ -88,7 +97,7 @@ const About = () => (
               <p className="text-sm text-muted-foreground">{v.desc}</p>
             </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   </main>

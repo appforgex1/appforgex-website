@@ -5,14 +5,7 @@ import { Button } from "@/components/ui/button";
 import SectionHeader from "@/components/shared/SectionHeader";
 import heroBg from "@/assets/hero-bg.jpg";
 import ProjectLifecycleScenario from "@/components/ProjectLifecycleScenario";
-
-const fadeUp = {
-  hidden: { opacity: 0, y: 30 },
-  visible: (i: number) => ({
-    opacity: 1, y: 0,
-    transition: { delay: i * 0.1, duration: 0.5 },
-  }),
-};
+import { fadeInUp, staggerContainer, scaleOnHover, buttonGlow } from "@/utils/animations";
 
 const services = [
   { icon: Code, title: "Web Development", desc: "Scalable web platforms built with modern frameworks." },
@@ -49,9 +42,9 @@ const Index = () => {
 
         <div className="container relative mx-auto px-4 lg:px-8 pt-24 pb-16">
           <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7 }}
+            initial="hidden"
+            animate="visible"
+            variants={fadeInUp}
             className="max-w-3xl"
           >
             <span className="inline-block text-xs font-semibold tracking-widest uppercase text-primary mb-4 border border-primary/30 px-3 py-1 rounded-full">
@@ -66,28 +59,36 @@ const Index = () => {
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
               <Link to="/contact">
-                <Button size="lg" className="gradient-primary text-primary-foreground border-0 hover:opacity-90 px-8">
-                  Get a Free Consultation
-                  <ArrowRight className="ml-2" size={18} />
-                </Button>
+                <motion.div whileHover="hover" whileTap="tap" variants={buttonGlow}>
+                  <Button size="lg" className="gradient-primary text-primary-foreground border-0 px-8 glow-on-hover">
+                    Get a Free Consultation
+                    <ArrowRight className="ml-2" size={18} />
+                  </Button>
+                </motion.div>
               </Link>
               <Link to="/services">
-                <Button size="lg" variant="outline" className="border-border text-foreground hover:bg-secondary px-8">
-                  View Our Services
-                </Button>
+                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                  <Button size="lg" variant="outline" className="border-border text-foreground hover:bg-secondary px-8">
+                    View Our Services
+                  </Button>
+                </motion.div>
               </Link>
             </div>
           </motion.div>
 
           {/* Trust indicators */}
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4, duration: 0.6 }}
+            initial="hidden"
+            animate="visible"
+            variants={staggerContainer}
             className="mt-16 md:mt-24 grid grid-cols-1 md:grid-cols-3 gap-6"
           >
             {trustItems.map((item, i) => (
-              <div key={i} className="flex items-start gap-4 p-5 rounded-lg border border-border bg-card/50">
+              <motion.div
+                key={i}
+                variants={fadeInUp}
+                className="flex items-start gap-4 p-5 rounded-lg border border-border bg-card/50"
+              >
                 <div className="p-2 rounded-md gradient-primary shrink-0">
                   <item.icon size={20} className="text-primary-foreground" />
                 </div>
@@ -95,7 +96,7 @@ const Index = () => {
                   <h3 className="font-semibold text-foreground text-sm">{item.label}</h3>
                   <p className="text-xs text-muted-foreground mt-1">{item.desc}</p>
                 </div>
-              </div>
+              </motion.div>
             ))}
           </motion.div>
         </div>
@@ -109,16 +110,19 @@ const Index = () => {
             title="Comprehensive Digital Services"
             description="From concept to deployment, we deliver solutions that drive growth and operational excellence."
           />
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+            variants={staggerContainer}
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5"
+          >
             {services.map((s, i) => (
               <motion.div
                 key={i}
-                custom={i}
-                variants={fadeUp}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true }}
-                className="group p-6 rounded-lg border border-border bg-card hover:border-primary/40 transition-all duration-300"
+                variants={fadeInUp}
+                whileHover={scaleOnHover}
+                className="group p-6 rounded-lg border border-border bg-card hover:border-primary/40 transition-colors duration-300"
               >
                 <div className="p-2.5 rounded-md bg-primary/10 inline-block mb-4 group-hover:bg-primary/20 transition-colors">
                   <s.icon size={22} className="text-primary" />
@@ -127,7 +131,7 @@ const Index = () => {
                 <p className="text-sm text-muted-foreground leading-relaxed">{s.desc}</p>
               </motion.div>
             ))}
-          </div>
+          </motion.div>
         </div>
       </section>
 
@@ -136,10 +140,10 @@ const Index = () => {
         <div className="container mx-auto px-4 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              whileInView={{ opacity: 1, x: 0 }}
+              initial="hidden"
+              whileInView="visible"
               viewport={{ once: true }}
-              transition={{ duration: 0.5 }}
+              variants={fadeInUp}
             >
               <span className="text-xs font-semibold tracking-widest uppercase text-primary mb-3 block">Why AppforgeX</span>
               <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-6">
@@ -164,10 +168,10 @@ const Index = () => {
             </motion.div>
 
             <motion.div
-              initial={{ opacity: 0, x: 30 }}
-              whileInView={{ opacity: 1, x: 0 }}
+              initial="hidden"
+              whileInView="visible"
               viewport={{ once: true }}
-              transition={{ duration: 0.5 }}
+              variants={staggerContainer}
               className="grid grid-cols-2 gap-4"
             >
               {[
@@ -176,10 +180,14 @@ const Index = () => {
                 { num: "50+", label: "Enterprise Clients" },
                 { num: "24/7", label: "Support Coverage" },
               ].map((s, i) => (
-                <div key={i} className="p-6 rounded-lg border border-border bg-card text-center">
+                <motion.div
+                  key={i}
+                  variants={fadeInUp}
+                  className="p-6 rounded-lg border border-border bg-card text-center"
+                >
                   <div className="text-3xl font-bold text-gradient mb-1">{s.num}</div>
                   <div className="text-xs text-muted-foreground">{s.label}</div>
-                </div>
+                </motion.div>
               ))}
             </motion.div>
           </div>
@@ -197,21 +205,24 @@ const Index = () => {
             title="Tailored Solutions Across Sectors"
             description="We understand the unique challenges of each industry and deliver purpose-built technology."
           />
-          <div className="flex flex-wrap justify-center gap-3">
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={staggerContainer}
+            className="flex flex-wrap justify-center gap-3"
+          >
             {industries.map((ind, i) => (
               <motion.span
                 key={i}
-                custom={i}
-                variants={fadeUp}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true }}
+                variants={fadeInUp}
+                whileHover={{ scale: 1.05 }}
                 className="px-5 py-2.5 rounded-full border border-border bg-card text-sm text-foreground hover:border-primary/40 transition-colors cursor-default"
               >
                 {ind}
               </motion.span>
             ))}
-          </div>
+          </motion.div>
         </div>
       </section>
 
@@ -220,10 +231,10 @@ const Index = () => {
         <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-transparent to-cyan/5" />
         <div className="container relative mx-auto px-4 lg:px-8 text-center">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            initial="hidden"
+            whileInView="visible"
             viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
+            variants={fadeInUp}
           >
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-4">
               Ready to Build Something <span className="text-gradient">Remarkable</span>?
@@ -232,9 +243,11 @@ const Index = () => {
               Let's discuss your project and find the right solution for your organization.
             </p>
             <Link to="/contact">
-              <Button size="lg" className="gradient-primary text-primary-foreground border-0 hover:opacity-90 px-10">
-                Start Your Project <ArrowRight className="ml-2" size={18} />
-              </Button>
+              <motion.div whileHover="hover" whileTap="tap" variants={buttonGlow} className="inline-block">
+                <Button size="lg" className="gradient-primary text-primary-foreground border-0 px-10 glow-on-hover">
+                  Start Your Project <ArrowRight className="ml-2" size={18} />
+                </Button>
+              </motion.div>
             </Link>
           </motion.div>
         </div>
