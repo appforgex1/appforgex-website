@@ -1,3 +1,5 @@
+# ![AppforgeX Logo](public/appforgex-logo.png "AppforgeX")
+
 # AppforgeX Digital Hub
 
 **Enterprise Digital Solutions for Modern Organizations**
@@ -27,8 +29,8 @@ To run this project locally, follow these steps:
 
 1.  **Clone the repository:**
     ```bash
-    git clone <repository-url>
-    cd appforgex-digital-hub
+    git clone https://github.com/appforgex1/appforgex-website.git
+    cd appforgex-website
     ```
 
 2.  **Install dependencies:**
