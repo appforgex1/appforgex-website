@@ -7,7 +7,9 @@ const Footer = () => (
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
         {/* Brand */}
         <div>
-          <span className="text-xl font-bold text-gradient">AppforgeX</span>
+          <Link to="/" className="inline-block mb-3">
+            <img src="/appforgex-logo.png" alt="AppforgeX" className="h-12 w-auto" />
+          </Link>
           <p className="mt-3 text-sm text-muted-foreground leading-relaxed">
             Build Smarter. Scale Faster. Secure Everything. End-to-end digital solutions for modern organizations.
           </p>
