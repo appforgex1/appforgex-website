@@ -8,7 +8,7 @@ const Footer = () => (
         {/* Brand */}
         <div>
           <Link to="/" className="inline-block mb-3">
-            <img src="/appforgex-logo.png" alt="AppforgeX" className="h-12 w-auto" />
+            <img src="/appforgex-logo.png" alt="AppforgeX" className="h-20 w-auto" />
           </Link>
           <p className="mt-3 text-sm text-muted-foreground leading-relaxed">
             Build Smarter. Scale Faster. Secure Everything. End-to-end digital solutions for modern organizations.

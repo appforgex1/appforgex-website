@@ -22,7 +22,7 @@ const Navbar = () => {
     <nav className="fixed top-0 left-0 right-0 z-50 glass">
       <div className="container mx-auto flex items-center justify-between h-16 px-4 lg:px-8">
         <Link to="/" className="flex items-center gap-2">
-          <img src="/appforgex-logo.png" alt="AppforgeX" className="h-10 w-auto" />
+          <img src="/appforgex-logo.png" alt="AppforgeX" className="h-14 w-auto" />
         </Link>
 
         {/* Desktop */}
@@ -32,8 +32,8 @@ const Navbar = () => {
               key={link.to}
               to={link.to}
               className={`px-3 py-2 text-sm font-medium rounded-md transition-colors ${location.pathname === link.to
-                  ? "text-primary"
-                  : "text-muted-foreground hover:text-foreground"
+                ? "text-primary"
+                : "text-muted-foreground hover:text-foreground"
                 }`}
             >
               {link.label}
@@ -75,8 +75,8 @@ const Navbar = () => {
                   to={link.to}
                   onClick={() => setOpen(false)}
                   className={`px-3 py-2 text-sm font-medium rounded-md transition-colors ${location.pathname === link.to
-                      ? "text-primary"
-                      : "text-muted-foreground hover:text-foreground"
+                    ? "text-primary"
+                    : "text-muted-foreground hover:text-foreground"
                     }`}
                 >
                   {link.label}
