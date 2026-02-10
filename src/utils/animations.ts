@@ -7,8 +7,8 @@ export const fadeInUp: Variants = {
         y: 0,
         transition: {
             delay: i * 0.1,
-            duration: 0.5,
-            ease: [0.25, 0.4, 0.25, 1],
+            duration: 0.8,
+            ease: [0.16, 1, 0.3, 1],
         },
     }),
 };
@@ -19,8 +19,8 @@ export const simpleFade: Variants = {
         opacity: 1,
         transition: {
             delay: i * 0.1,
-            duration: 0.5,
-            ease: "easeOut",
+            duration: 0.8,
+            ease: [0.16, 1, 0.3, 1],
         },
     }),
 };
@@ -50,9 +50,9 @@ export const textReveal: Variants = {
         y: 0,
         opacity: 1,
         transition: {
-            delay: i * 0.05,
-            duration: 0.8,
-            ease: [0.33, 1, 0.68, 1], // Cubic bezier for "premium" feel
+            delay: i * 0.08,
+            duration: 1.2,
+            ease: [0.16, 1, 0.3, 1],
         },
     }),
 };
@@ -64,9 +64,9 @@ export const smoothFadeUp: Variants = {
         opacity: 1,
         y: 0,
         transition: {
-            delay: i * 0.1,
-            duration: 1,
-            ease: [0.22, 1, 0.36, 1],
+            delay: i * 0.12,
+            duration: 1.4,
+            ease: [0.16, 1, 0.3, 1],
         },
     }),
 };

@@ -78,7 +78,7 @@ const Industries = () => (
             <motion.div
               key={i}
               variants={smoothFadeUp}
-              className="p-8 rounded-[2rem] border border-border bg-card/50 backdrop-blur-xl hover:border-primary/30 transition-all duration-500 flex flex-col group"
+              className="p-8 rounded-[2rem] glass-card hover:border-primary/30 transition-all duration-700 flex flex-col group"
             >
               <Magnetic strength={20}>
                 <div className="p-4 rounded-2xl bg-primary/10 inline-block mb-6 group-hover:bg-primary/20 transition-all group-hover:scale-110">

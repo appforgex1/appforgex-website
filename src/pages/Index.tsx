@@ -170,7 +170,7 @@ const Index = () => {
                 key={i}
                 variants={smoothFadeUp}
                 whileHover={{ y: -5, borderColor: "rgba(var(--primary), 0.3)" }}
-                className="group p-8 rounded-2xl border border-border/50 bg-card/50 backdrop-blur-sm hover:shadow-2xl hover:shadow-primary/5 transition-all duration-500"
+                className="group p-8 rounded-2xl glass-card hover:shadow-2xl hover:shadow-primary/5 transition-all duration-700"
               >
                 <div className="p-3 rounded-xl bg-primary/10 inline-block mb-6 group-hover:bg-primary/20 transition-all group-hover:scale-110">
                   <s.icon size={26} className="text-primary" />

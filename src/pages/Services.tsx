@@ -115,7 +115,7 @@ const Services = () => (
             <motion.div
               key={i}
               variants={smoothFadeUp}
-              className="p-8 md:p-12 rounded-[2rem] border border-border/50 bg-card/50 backdrop-blur-xl hover:border-primary/30 transition-all duration-500 shadow-xl group"
+              className="p-8 md:p-12 rounded-[2rem] glass-card hover:border-primary/30 transition-all duration-700 shadow-2xl group"
             >
               <div className="flex flex-col lg:flex-row gap-12">
                 <div className="lg:w-1/2">
