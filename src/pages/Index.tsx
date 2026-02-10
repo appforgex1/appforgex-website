@@ -59,12 +59,12 @@ const Index = () => {
         </div>
 
         <div className="container mx-auto px-4 lg:px-12 relative z-10">
-          <div className="grid lg:grid-cols-2 gap-16 lg:gap-24 items-center">
+          <div className="flex justify-center items-center text-center">
             <motion.div
               initial="hidden"
               animate="visible"
               variants={staggerContainer}
-              className="text-left max-w-2xl"
+              className="max-w-4xl mx-auto"
             >
               <motion.div variants={smoothFadeUp} className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary text-xs font-bold mb-10 border border-primary/20 backdrop-blur-sm">
                 <span className="relative flex h-2 w-2">
@@ -88,11 +88,11 @@ const Index = () => {
                 </TextReveal>
               </div>
 
-              <motion.p variants={smoothFadeUp} className="text-lg md:text-xl text-muted-foreground mb-14 lg:mb-20 max-w-xl leading-relaxed font-medium">
+              <motion.p variants={smoothFadeUp} className="text-lg md:text-xl text-muted-foreground mb-14 lg:mb-20 max-w-2xl mx-auto leading-relaxed font-medium">
                 Precision engineering for the modern enterprise. We design, build, and secure technology that scales. From startups to global institutions, AppforgeX delivers measurable results.
               </motion.p>
 
-              <motion.div variants={smoothFadeUp} className="flex flex-col sm:flex-row items-center gap-5">
+              <motion.div variants={smoothFadeUp} className="flex flex-col sm:flex-row items-center justify-center gap-5">
                 <Magnetic strength={30}>
                   <Link to="/contact">
                     <Button size="lg" className="h-14 px-8 text-base gradient-primary text-primary-foreground border-0 hover:opacity-95 transition-all rounded-xl shadow-xl shadow-primary/25 font-semibold group">
@@ -110,32 +110,6 @@ const Index = () => {
               </motion.div>
             </motion.div>
 
-            <motion.div
-              initial={{ opacity: 0, scale: 0.8, rotate: -5 }}
-              animate={{ opacity: 1, scale: 1, rotate: 0 }}
-              transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1], delay: 0.5 }}
-              className="relative hidden lg:block"
-            >
-              <div className="absolute -inset-10 bg-gradient-to-tr from-primary/30 to-cyan/30 rounded-full blur-[100px] opacity-40 animate-pulse-slow" />
-              <div className="relative z-10 rounded-2xl overflow-hidden border border-white/10 shadow-2xl backdrop-blur-md bg-white/5 p-4">
-                <img src="/assets/images/mobiledev.jpg" alt="Digital Solutions" className="w-full h-auto rounded-xl object-cover hover:scale-105 transition-transform duration-1000" />
-              </div>
-
-              {/* Floating Badge */}
-              <motion.div
-                animate={{ y: [0, -20, 0] }}
-                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                className="absolute -top-6 -right-6 p-4 rounded-2xl bg-card border border-border shadow-xl backdrop-blur-md z-20 max-w-[180px]"
-              >
-                <div className="flex items-center gap-3 mb-2">
-                  <div className="p-2 rounded-lg bg-primary/10">
-                    <Shield className="text-primary w-5 h-5" />
-                  </div>
-                  <span className="text-xs font-bold">Secure-First</span>
-                </div>
-                <p className="text-[10px] text-muted-foreground leading-snug">Enterprise-grade security integrated into every line of code.</p>
-              </motion.div>
-            </motion.div>
           </div>
         </div>
       </section>
