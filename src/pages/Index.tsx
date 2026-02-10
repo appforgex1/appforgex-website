@@ -1,11 +1,14 @@
 import { Link } from "react-router-dom";
-import { motion } from "framer-motion";
-import { Shield, Zap, Globe, Code, Smartphone, Brain, Lock, Cloud, Database, Box, ArrowRight, CheckCircle2 } from "lucide-react";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { useRef } from "react";
+import { Shield, Zap, Globe, Code, Smartphone, Brain, Lock, Cloud, Database, Box, ArrowRight, CheckCircle2, Rocket, Layout } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import SectionHeader from "@/components/shared/SectionHeader";
 import heroBg from "@/assets/hero-bg.jpg";
 import ProjectLifecycleScenario from "@/components/ProjectLifecycleScenario";
-import { fadeInUp, staggerContainer, scaleOnHover, buttonGlow } from "@/utils/animations";
+import { fadeInUp, staggerContainer, scaleOnHover, buttonGlow, smoothFadeUp } from "@/utils/animations";
+import TextReveal from "@/components/ui/text-reveal";
+import Magnetic from "@/components/ui/magnetic";
 
 const services = [
   { icon: Code, title: "Web Development", desc: "Scalable web platforms built with modern frameworks." },
@@ -18,93 +21,138 @@ const services = [
   { icon: Globe, title: "UI/UX Design", desc: "User-centered design that converts." },
 ];
 
-const trustItems = [
-  { icon: Shield, label: "Security-First", desc: "Every solution is built with enterprise-grade security." },
-  { icon: Zap, label: "Fast Delivery", desc: "Agile processes that get you to market faster." },
-  { icon: Globe, label: "Scalable", desc: "Architecture designed to grow with your organization." },
-];
-
 const industries = [
   "Startups & Founders", "Small & Medium Enterprises", "Large Enterprises",
   "NGOs & Institutions", "Digital Platforms", "Healthcare & Fintech",
 ];
 
 const Index = () => {
+  const ref = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start start", "end start"]
+  });
+
+  const y = useTransform(scrollYProgress, [0, 1], ["0%", "50%"]);
+  const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
+
   return (
-    <main>
-      {/* Hero */}
-      <section className="relative min-h-screen flex items-center overflow-hidden">
-        <div className="absolute inset-0">
-          <img src={heroBg} alt="" className="w-full h-full object-cover opacity-40" />
-          <div className="absolute inset-0 bg-gradient-to-b from-background/60 via-background/80 to-background" />
+    <main className="overflow-hidden">
+      {/* Hero Section */}
+      <section className="relative min-h-[90vh] flex items-center pt-32 pb-20 overflow-hidden" ref={ref}>
+        {/* Background Elements */}
+        <div className="absolute inset-0 -z-10 bg-black">
+          <motion.div style={{ y, opacity }} className="absolute inset-0">
+            <video
+              autoPlay
+              muted
+              loop
+              playsInline
+              poster="/assets/images/hero.jpg"
+              className="w-full h-full object-cover opacity-60"
+            >
+              <source src="/assets/videos/hero.mp4" type="video/mp4" />
+            </video>
+            <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-background/80 to-background" />
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-primary/20 rounded-full blur-[120px] animate-pulse-slow" />
+          </motion.div>
         </div>
-        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-primary/5 blur-[120px]" />
 
-        <div className="container relative mx-auto px-4 lg:px-8 pt-24 pb-16">
-          <motion.div
-            initial="hidden"
-            animate="visible"
-            variants={fadeInUp}
-            className="max-w-3xl"
-          >
-            <span className="inline-block text-xs font-semibold tracking-widest uppercase text-primary mb-4 border border-primary/30 px-3 py-1 rounded-full">
-              Enterprise Digital Solutions
-            </span>
-            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-foreground leading-[1.1] mb-6">
-              End-to-End Digital Solutions for{" "}
-              <span className="text-gradient">Modern Organizations</span>
-            </h1>
-            <p className="text-lg md:text-xl text-muted-foreground max-w-xl mb-8 leading-relaxed">
-              We design, build, and secure technology that scales. From startups to enterprises, AppforgeX delivers results.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4">
-              <Link to="/contact">
-                <motion.div whileHover="hover" whileTap="tap" variants={buttonGlow}>
-                  <Button size="lg" className="gradient-primary text-primary-foreground border-0 px-8 glow-on-hover">
-                    Get a Free Consultation
-                    <ArrowRight className="ml-2" size={18} />
-                  </Button>
-                </motion.div>
-              </Link>
-              <Link to="/services">
-                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                  <Button size="lg" variant="outline" className="border-border text-foreground hover:bg-secondary px-8">
-                    View Our Services
-                  </Button>
-                </motion.div>
-              </Link>
-            </div>
-          </motion.div>
-
-          {/* Trust indicators */}
-          <motion.div
-            initial="hidden"
-            animate="visible"
-            variants={staggerContainer}
-            className="mt-16 md:mt-24 grid grid-cols-1 md:grid-cols-3 gap-6"
-          >
-            {trustItems.map((item, i) => (
-              <motion.div
-                key={i}
-                variants={fadeInUp}
-                className="flex items-start gap-4 p-5 rounded-lg border border-border bg-card/50"
-              >
-                <div className="p-2 rounded-md gradient-primary shrink-0">
-                  <item.icon size={20} className="text-primary-foreground" />
-                </div>
-                <div>
-                  <h3 className="font-semibold text-foreground text-sm">{item.label}</h3>
-                  <p className="text-xs text-muted-foreground mt-1">{item.desc}</p>
-                </div>
+        <div className="container mx-auto px-4 lg:px-12 relative z-10">
+          <div className="grid lg:grid-cols-2 gap-16 lg:gap-24 items-center">
+            <motion.div
+              initial="hidden"
+              animate="visible"
+              variants={staggerContainer}
+              className="text-left max-w-2xl"
+            >
+              <motion.div variants={smoothFadeUp} className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary text-xs font-bold mb-10 border border-primary/20 backdrop-blur-sm">
+                <span className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
+                </span>
+                Enterprise Digital Solutions
               </motion.div>
-            ))}
-          </motion.div>
+              <div className="mb-10 lg:mb-14">
+                <TextReveal className="text-5xl md:text-7xl lg:text-8xl font-black tracking-tight text-foreground mb-6 leading-[1.05]">
+                  End-to-End
+                </TextReveal>
+                <motion.div
+                  initial={{ width: 0 }}
+                  animate={{ width: "80px" }}
+                  transition={{ delay: 1, duration: 0.8 }}
+                  className="h-1.5 bg-gradient-to-r from-primary to-cyan rounded-full mb-8"
+                />
+                <TextReveal delay={0.5} className="text-5xl md:text-7xl lg:text-8xl font-black tracking-tight text-gradient leading-[1.05]">
+                  Digital Excellence
+                </TextReveal>
+              </div>
+
+              <motion.p variants={smoothFadeUp} className="text-lg md:text-xl text-muted-foreground mb-14 lg:mb-20 max-w-xl leading-relaxed font-medium">
+                Precision engineering for the modern enterprise. We design, build, and secure technology that scales. From startups to global institutions, AppforgeX delivers measurable results.
+              </motion.p>
+
+              <motion.div variants={smoothFadeUp} className="flex flex-col sm:flex-row items-center gap-5">
+                <Magnetic strength={30}>
+                  <Link to="/contact">
+                    <Button size="lg" className="h-14 px-8 text-base gradient-primary text-primary-foreground border-0 hover:opacity-95 transition-all rounded-xl shadow-xl shadow-primary/25 font-semibold group">
+                      Get a Free Consultation <ArrowRight className="ml-2 h-5 w-5 transform group-hover:translate-x-1 transition-transform" />
+                    </Button>
+                  </Link>
+                </Magnetic>
+                <Magnetic strength={20}>
+                  <Link to="/services">
+                    <Button variant="outline" size="lg" className="h-14 px-8 text-base rounded-xl border-border hover:bg-secondary/50 transition-all font-medium backdrop-blur-sm">
+                      Explore Our Services
+                    </Button>
+                  </Link>
+                </Magnetic>
+              </motion.div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8, rotate: -5 }}
+              animate={{ opacity: 1, scale: 1, rotate: 0 }}
+              transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1], delay: 0.5 }}
+              className="relative hidden lg:block"
+            >
+              <div className="absolute -inset-10 bg-gradient-to-tr from-primary/30 to-cyan/30 rounded-full blur-[100px] opacity-40 animate-pulse-slow" />
+              <div className="relative z-10 rounded-2xl overflow-hidden border border-white/10 shadow-2xl backdrop-blur-md bg-white/5 p-4">
+                <img src="/assets/images/mobiledev.jpg" alt="Digital Solutions" className="w-full h-auto rounded-xl object-cover hover:scale-105 transition-transform duration-1000" />
+              </div>
+
+              {/* Floating Badge */}
+              <motion.div
+                animate={{ y: [0, -20, 0] }}
+                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                className="absolute -top-6 -right-6 p-4 rounded-2xl bg-card border border-border shadow-xl backdrop-blur-md z-20 max-w-[180px]"
+              >
+                <div className="flex items-center gap-3 mb-2">
+                  <div className="p-2 rounded-lg bg-primary/10">
+                    <Shield className="text-primary w-5 h-5" />
+                  </div>
+                  <span className="text-xs font-bold">Secure-First</span>
+                </div>
+                <p className="text-[10px] text-muted-foreground leading-snug">Enterprise-grade security integrated into every line of code.</p>
+              </motion.div>
+            </motion.div>
+          </div>
         </div>
       </section>
 
       {/* Services Overview */}
-      <section className="section-padding bg-secondary/30">
-        <div className="container mx-auto px-4 lg:px-8">
+      <section className="section-padding bg-secondary/20 relative overflow-hidden">
+        <video
+          autoPlay
+          muted
+          loop
+          playsInline
+          className="absolute inset-0 w-full h-full object-cover opacity-[0.03] pointer-events-none"
+        >
+          <source src="/assets/videos/services.mp4" type="video/mp4" />
+        </video>
+        <div className="absolute top-0 right-0 w-1/3 h-full bg-gradient-to-l from-primary/5 to-transparent pointer-events-none" />
+        <div className="container mx-auto px-4 lg:px-8 relative z-10">
           <SectionHeader
             label="What We Do"
             title="Comprehensive Digital Services"
@@ -115,56 +163,41 @@ const Index = () => {
             whileInView="visible"
             viewport={{ once: true, margin: "-100px" }}
             variants={staggerContainer}
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5"
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
           >
             {services.map((s, i) => (
               <motion.div
                 key={i}
-                variants={fadeInUp}
-                whileHover={scaleOnHover}
-                className="group p-6 rounded-lg border border-border bg-card hover:border-primary/40 transition-colors duration-300"
+                variants={smoothFadeUp}
+                whileHover={{ y: -5, borderColor: "rgba(var(--primary), 0.3)" }}
+                className="group p-8 rounded-2xl border border-border/50 bg-card/50 backdrop-blur-sm hover:shadow-2xl hover:shadow-primary/5 transition-all duration-500"
               >
-                <div className="p-2.5 rounded-md bg-primary/10 inline-block mb-4 group-hover:bg-primary/20 transition-colors">
-                  <s.icon size={22} className="text-primary" />
+                <div className="p-3 rounded-xl bg-primary/10 inline-block mb-6 group-hover:bg-primary/20 transition-all group-hover:scale-110">
+                  <s.icon size={26} className="text-primary" />
                 </div>
-                <h3 className="font-semibold text-foreground mb-2">{s.title}</h3>
-                <p className="text-sm text-muted-foreground leading-relaxed">{s.desc}</p>
+                <h3 className="text-xl font-bold text-foreground mb-3">{s.title}</h3>
+                <p className="text-sm text-muted-foreground leading-relaxed leading-relaxed">{s.desc}</p>
               </motion.div>
             ))}
           </motion.div>
         </div>
       </section>
 
-      {/* Why Choose Us */}
-      <section className="section-padding">
+      {/* Feature Highlight with Graphic */}
+      <section className="section-padding relative overflow-hidden">
         <div className="container mx-auto px-4 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
+          <div className="grid lg:grid-cols-2 gap-16 items-center">
             <motion.div
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true }}
-              variants={fadeInUp}
+              variants={smoothFadeUp}
+              className="relative order-2 lg:order-1"
             >
-              <span className="text-xs font-semibold tracking-widest uppercase text-primary mb-3 block">Why AppforgeX</span>
-              <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-6">
-                A Technology Partner You Can <span className="text-gradient">Trust</span>
-              </h2>
-              <p className="text-muted-foreground mb-8 leading-relaxed">
-                We combine deep technical expertise with a security-first approach and transparent execution. Every project is delivered with precision, on time, and within budget.
-              </p>
-              <div className="space-y-4">
-                {["Expert engineers with 10+ years experience", "Security integrated at every layer", "Transparent pricing, no hidden costs", "Post-launch support & maintenance"].map((item, i) => (
-                  <div key={i} className="flex items-center gap-3">
-                    <CheckCircle2 size={18} className="text-cyan shrink-0" />
-                    <span className="text-sm text-foreground">{item}</span>
-                  </div>
-                ))}
+              <div className="absolute -inset-4 bg-primary/20 rounded-full blur-[100px] opacity-20" />
+              <div className="relative rounded-3xl overflow-hidden shadow-2xl border border-border/40">
+                <img src="/assets/images/ai.jpg" alt="Technology Visualization" className="w-full h-auto" />
               </div>
-              <Link to="/why-appforgex" className="inline-block mt-8">
-                <Button variant="outline" className="border-primary/40 text-primary hover:bg-primary/10">
-                  Learn More <ArrowRight className="ml-2" size={16} />
-                </Button>
-              </Link>
             </motion.div>
 
             <motion.div
@@ -172,83 +205,57 @@ const Index = () => {
               whileInView="visible"
               viewport={{ once: true }}
               variants={staggerContainer}
-              className="grid grid-cols-2 gap-4"
+              className="order-1 lg:order-2"
             >
-              {[
-                { num: "200+", label: "Projects Delivered" },
-                { num: "99.9%", label: "Uptime SLA" },
-                { num: "50+", label: "Enterprise Clients" },
-                { num: "24/7", label: "Support Coverage" },
-              ].map((s, i) => (
-                <motion.div
-                  key={i}
-                  variants={fadeInUp}
-                  className="p-6 rounded-lg border border-border bg-card text-center"
-                >
-                  <div className="text-3xl font-bold text-gradient mb-1">{s.num}</div>
-                  <div className="text-xs text-muted-foreground">{s.label}</div>
-                </motion.div>
-              ))}
+              <span className="text-xs font-semibold tracking-widest uppercase text-primary mb-4 block">Why Choose Us</span>
+              <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-8 leading-tight">
+                A Technology Partner You Can <span className="text-gradient">Trust</span>
+              </h2>
+              <div className="space-y-6">
+                {[
+                  { title: "Expert Engineering", desc: "Senior teams with deep expertise in cloud, security, and AI." },
+                  { title: "Security-First Mindset", desc: "We build secure by design, protecting your data and users." },
+                  { title: "Transparent Execution", desc: "Clear communication and predictable delivery at every stage." },
+                ].map((item, i) => (
+                  <motion.div key={i} variants={smoothFadeUp} className="flex gap-4 p-5 rounded-2xl border border-border/50 bg-card/30 hover:bg-card/50 transition-colors">
+                    <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center text-primary shrink-0 font-bold text-sm">
+                      0{i + 1}
+                    </div>
+                    <div>
+                      <h4 className="font-bold text-foreground mb-1">{item.title}</h4>
+                      <p className="text-sm text-muted-foreground leading-relaxed">{item.desc}</p>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
             </motion.div>
           </div>
         </div>
       </section>
 
-      {/* Project Lifecycle Scenario */}
-      <ProjectLifecycleScenario />
-
-      {/* Industries */}
-      <section className="section-padding bg-secondary/30">
-        <div className="container mx-auto px-4 lg:px-8">
-          <SectionHeader
-            label="Industries"
-            title="Tailored Solutions Across Sectors"
-            description="We understand the unique challenges of each industry and deliver purpose-built technology."
-          />
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={staggerContainer}
-            className="flex flex-wrap justify-center gap-3"
-          >
-            {industries.map((ind, i) => (
-              <motion.span
-                key={i}
-                variants={fadeInUp}
-                whileHover={{ scale: 1.05 }}
-                className="px-5 py-2.5 rounded-full border border-border bg-card text-sm text-foreground hover:border-primary/40 transition-colors cursor-default"
-              >
-                {ind}
-              </motion.span>
-            ))}
-          </motion.div>
-        </div>
-      </section>
-
       {/* Final CTA */}
       <section className="section-padding relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-transparent to-cyan/5" />
-        <div className="container relative mx-auto px-4 lg:px-8 text-center">
+        <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-background to-cyan/10 opacity-30" />
+        <div className="container relative mx-auto px-4 lg:px-8 text-center bg-card/50 backdrop-blur-xl border border-border/60 py-20 rounded-[40px] shadow-2xl">
           <motion.div
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
-            variants={fadeInUp}
+            variants={smoothFadeUp}
           >
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-4">
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-6">
               Ready to Build Something <span className="text-gradient">Remarkable</span>?
             </h2>
-            <p className="text-muted-foreground max-w-xl mx-auto mb-8">
-              Let's discuss your project and find the right solution for your organization.
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-10 leading-relaxed">
+              Let's discuss your project and discover how AppforgeX can accelerate your digital transformation.
             </p>
-            <Link to="/contact">
-              <motion.div whileHover="hover" whileTap="tap" variants={buttonGlow} className="inline-block">
-                <Button size="lg" className="gradient-primary text-primary-foreground border-0 px-10 glow-on-hover">
-                  Start Your Project <ArrowRight className="ml-2" size={18} />
+            <Magnetic strength={40}>
+              <Link to="/contact">
+                <Button size="lg" className="h-16 px-12 text-lg gradient-primary text-primary-foreground border-0 hover:opacity-95 transition-all rounded-full shadow-2xl shadow-primary/30 font-bold group">
+                  Start Your Project <ArrowRight className="ml-3 h-6 w-6 group-hover:translate-x-1 transition-transform" />
                 </Button>
-              </motion.div>
-            </Link>
+              </Link>
+            </Magnetic>
           </motion.div>
         </div>
       </section>

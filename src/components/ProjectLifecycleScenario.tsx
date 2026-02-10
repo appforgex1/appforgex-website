@@ -22,7 +22,9 @@ import {
 import { Button } from "@/components/ui/button";
 import SectionHeader from "@/components/shared/SectionHeader";
 import { Link } from "react-router-dom";
-import { fadeInUp, staggerContainer, scaleOnHover, buttonGlow } from "@/utils/animations";
+import { fadeInUp, staggerContainer, scaleOnHover, buttonGlow, smoothFadeUp } from "@/utils/animations";
+import TextReveal from "@/components/ui/text-reveal";
+import Magnetic from "@/components/ui/magnetic";
 
 const timelineSteps = [
     {
@@ -149,11 +151,17 @@ const ProjectLifecycleScenario = () => {
             </div>
 
             <div className="container mx-auto px-4 lg:px-8 relative z-10">
-                <SectionHeader
-                    label="From Idea to Secure Production"
-                    title="How AppforgeX Delivers Excellence"
-                    description="A transparent, security-first process designed to take your project from concept to enterprise-ready reality."
-                />
+                <div className="mb-12 md:mb-16 text-center">
+                    <span className="inline-block text-xs font-semibold tracking-widest uppercase text-primary mb-3">
+                        From Idea to Secure Production
+                    </span>
+                    <TextReveal className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground leading-tight">
+                        How AppforgeX Delivers Excellence
+                    </TextReveal>
+                    <p className="mt-4 text-muted-foreground max-w-2xl leading-relaxed text-base md:text-lg mx-auto">
+                        A transparent, security-first process designed to take your project from concept to enterprise-ready reality.
+                    </p>
+                </div>
 
                 <div className="mt-16 relative">
                     {/* Vertical Line for Desktop */}
@@ -175,9 +183,11 @@ const ProjectLifecycleScenario = () => {
                                 <div className="flex-1 w-full lg:text-right">
                                     <div className={`p-6 rounded-xl border border-border bg-card/50 backdrop-blur-sm hover:border-primary/30 transition-all duration-300 ${index % 2 !== 0 ? "lg:text-right" : "lg:text-left"}`}>
                                         <div className={`flex items-center gap-3 mb-4 ${index % 2 !== 0 ? "lg:flex-row-reverse" : ""}`}>
-                                            <div className={`p-2.5 rounded-lg ${step.bg} ${step.color}`}>
-                                                <step.icon size={24} />
-                                            </div>
+                                            <Magnetic strength={15}>
+                                                <div className={`p-2.5 rounded-lg ${step.bg} ${step.color}`}>
+                                                    <step.icon size={24} />
+                                                </div>
+                                            </Magnetic>
                                             <h3 className="text-xl font-bold text-foreground">{step.title}</h3>
                                         </div>
                                         <p className="text-muted-foreground mb-4">{step.description}</p>

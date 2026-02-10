@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import TextReveal from "@/components/ui/text-reveal";
 
 interface SectionHeaderProps {
   label?: string;
@@ -20,9 +21,9 @@ const SectionHeader = ({ label, title, description, center = true }: SectionHead
         {label}
       </span>
     )}
-    <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground leading-tight">
+    <TextReveal className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground leading-tight">
       {title}
-    </h2>
+    </TextReveal>
     {description && (
       <p className="mt-4 text-muted-foreground max-w-2xl leading-relaxed text-base md:text-lg mx-auto">
         {description}

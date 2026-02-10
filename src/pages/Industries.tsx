@@ -2,6 +2,9 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Rocket, Building2, Landmark, Heart, Layers, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { fadeInUp, staggerContainer, scaleOnHover, smoothFadeUp } from "@/utils/animations";
+import TextReveal from "@/components/ui/text-reveal";
+import Magnetic from "@/components/ui/magnetic";
 
 const industries = [
   {
@@ -37,60 +40,81 @@ const industries = [
 ];
 
 const Industries = () => (
-  <main className="pt-20">
-    <section className="section-padding">
-      <div className="container mx-auto px-4 lg:px-8">
+  <main className="pt-20 overflow-hidden">
+    <section className="relative pt-32 pb-20 md:pt-40 md:pb-28 overflow-hidden bg-black">
+      <div className="absolute inset-0 -z-10">
+        <img src="/assets/images/industries.jpg" alt="" className="w-full h-full object-cover opacity-40" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-background/80 to-background" />
+      </div>
+      <div className="container mx-auto px-4 lg:px-12">
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="max-w-3xl mb-16"
+          initial="hidden"
+          animate="visible"
+          variants={staggerContainer}
+          className="max-w-5xl mb-24 lg:mb-32"
         >
-          <span className="text-xs font-semibold tracking-widest uppercase text-primary mb-3 block">Industries</span>
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-6">
-            Purpose-Built for <span className="text-gradient">Every Sector</span>
-          </h1>
-          <p className="text-lg text-muted-foreground leading-relaxed">
-            We understand the nuances of your industry and deliver technology that fits.
-          </p>
+          <motion.span variants={smoothFadeUp} className="text-xs font-bold tracking-widest uppercase text-primary mb-6 block">Industries</motion.span>
+          <div className="mb-10 lg:mb-12">
+            <TextReveal className="text-4xl md:text-5xl lg:text-8xl font-black text-foreground leading-[1.1]">
+              Purpose-Built for
+            </TextReveal>
+            <TextReveal delay={0.5} className="text-4xl md:text-5xl lg:text-8xl font-black text-gradient leading-[1.1]">
+              Every Sector
+            </TextReveal>
+          </div>
+          <motion.p variants={smoothFadeUp} className="text-xl md:text-2xl text-muted-foreground leading-relaxed max-w-3xl font-medium">
+            We understand the unique operational challenges of each sector and deliver precision-engineered technology that fits your specific needs.
+          </motion.p>
         </motion.div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-50px" }}
+          variants={staggerContainer}
+          className="grid md:grid-cols-2 lg:grid-cols-3 gap-8"
+        >
           {industries.map((ind, i) => (
             <motion.div
               key={i}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.1, duration: 0.5 }}
-              className="p-6 rounded-xl border border-border bg-card hover:border-primary/30 transition-colors flex flex-col"
+              variants={smoothFadeUp}
+              className="p-8 rounded-[2rem] border border-border bg-card/50 backdrop-blur-xl hover:border-primary/30 transition-all duration-500 flex flex-col group"
             >
-              <div className="p-2.5 rounded-md bg-primary/10 inline-block mb-4 self-start">
-                <ind.icon size={22} className="text-primary" />
-              </div>
-              <h3 className="text-lg font-semibold text-foreground mb-2">{ind.title}</h3>
-              <p className="text-sm text-muted-foreground mb-4 flex-1 leading-relaxed">{ind.desc}</p>
-              <div className="flex flex-wrap gap-2">
+              <Magnetic strength={20}>
+                <div className="p-4 rounded-2xl bg-primary/10 inline-block mb-6 group-hover:bg-primary/20 transition-all group-hover:scale-110">
+                  <ind.icon size={28} className="text-primary" />
+                </div>
+              </Magnetic>
+              <h3 className="text-2xl font-bold text-foreground mb-4 group-hover:text-primary transition-colors">{ind.title}</h3>
+              <p className="text-base text-muted-foreground mb-8 flex-1 leading-relaxed">{ind.desc}</p>
+              <div className="flex flex-wrap gap-2 pt-6 border-t border-border/40">
                 {ind.solutions.map((s, j) => (
-                  <span key={j} className="text-xs px-2.5 py-1 rounded-full bg-secondary text-secondary-foreground">
+                  <span key={j} className="text-[10px] font-bold px-3 py-1.5 rounded-full bg-secondary border border-border/40 text-secondary-foreground tracking-wider uppercase">
                     {s}
                   </span>
                 ))}
               </div>
             </motion.div>
           ))}
-        </div>
+        </motion.div>
 
-        <div className="mt-12 text-center">
-          <Link to="/contact">
-            <Button size="lg" className="gradient-primary text-primary-foreground border-0 hover:opacity-90">
-              Discuss Your Industry Needs <ArrowRight className="ml-2" size={18} />
-            </Button>
-          </Link>
-        </div>
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          variants={smoothFadeUp}
+          className="mt-20 text-center"
+        >
+          <Magnetic strength={30}>
+            <Link to="/contact">
+              <Button size="lg" className="h-16 px-12 text-lg gradient-primary text-primary-foreground border-0 shadow-xl shadow-primary/25 rounded-full font-bold group">
+                Discuss Your Industry Needs <ArrowRight className="ml-3 group-hover:translate-x-1 transition-transform" />
+              </Button>
+            </Link>
+          </Magnetic>
+        </motion.div>
       </div>
     </section>
   </main>
 );
-
 export default Industries;

@@ -43,16 +43,58 @@ export const scaleOnHover: TargetAndTransition = {
     },
 };
 
+// Text Reveal (Masked Slide Up)
+export const textReveal: Variants = {
+    hidden: { y: "100%", opacity: 0 },
+    visible: (i: number = 0) => ({
+        y: 0,
+        opacity: 1,
+        transition: {
+            delay: i * 0.05,
+            duration: 0.8,
+            ease: [0.33, 1, 0.68, 1], // Cubic bezier for "premium" feel
+        },
+    }),
+};
+
+// Smooth Fade Up (Slower, heavier)
+export const smoothFadeUp: Variants = {
+    hidden: { opacity: 0, y: 40 },
+    visible: (i: number = 0) => ({
+        opacity: 1,
+        y: 0,
+        transition: {
+            delay: i * 0.1,
+            duration: 1,
+            ease: [0.22, 1, 0.36, 1],
+        },
+    }),
+};
+
+// Zoom In
+export const zoomIn: Variants = {
+    hidden: { scale: 0.9, opacity: 0 },
+    visible: (i: number = 0) => ({
+        scale: 1,
+        opacity: 1,
+        transition: {
+            delay: i * 0.1,
+            duration: 0.8,
+            ease: [0.22, 1, 0.36, 1],
+        },
+    }),
+};
+
 export const buttonGlow: Variants = {
     hover: {
         boxShadow: "0 0 20px rgba(var(--primary), 0.4)",
-        scale: 1.02,
+        scale: 1.05,
         transition: {
-            duration: 0.2,
-            ease: "easeInOut",
+            duration: 0.3,
+            ease: "easeOut",
         },
     },
     tap: {
-        scale: 0.98,
+        scale: 0.95,
     },
 };
