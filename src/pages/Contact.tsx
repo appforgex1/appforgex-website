@@ -51,7 +51,7 @@ const contactSchema = z.object({
   name: z.string().trim().min(1, "Name is required").max(100),
   email: z.string().trim().email("Invalid email address").max(255),
   organization: z.string().trim().max(100).optional(),
-  message: z.string().trim().min(1, "Message is required").max(2000),
+  message: z.string().trim().min(1, "Message is required").max(10000),
 });
 
 const Contact = () => {
@@ -221,8 +221,17 @@ const Contact = () => {
                 </div>
                 <div>
                   <label htmlFor="message" className="text-sm font-medium text-foreground block mb-1.5">Project Details *</label>
-                  <Textarea id="message" rows={5} value={form.message} onChange={(e) => update("message", e.target.value)} placeholder="Tell us about your project, goals, and timeline..." disabled={isSubmitting} className="bg-secondary border-border resize-none focus:ring-1 focus:ring-primary/20 transition-all duration-300" />
-                  {errors.message && <p className="text-xs text-destructive mt-1">{errors.message}</p>}
+                  <Textarea id="message" rows={6} value={form.message} onChange={(e) => update("message", e.target.value)} placeholder="Tell us about your project, goals, and timeline..." disabled={isSubmitting} className="bg-secondary border-border resize-none focus:ring-1 focus:ring-primary/20 transition-all duration-300 min-h-[150px]" />
+                  <div className="flex justify-between items-center mt-1.5">
+                    {errors.message ? (
+                      <p className="text-xs text-destructive">{errors.message}</p>
+                    ) : (
+                      <div />
+                    )}
+                    <span className="text-[10px] text-muted-foreground font-bold uppercase tracking-widest bg-primary/5 px-2 py-0.5 rounded">
+                      {form.message.length.toLocaleString()} / 10,000
+                    </span>
+                  </div>
                 </div>
 
                 <Magnetic strength={40}>
