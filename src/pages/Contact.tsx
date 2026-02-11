@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Mail, Phone, MapPin, MessageCircle, Send, ArrowRight } from "lucide-react";
+import { Mail, Phone, MapPin, MessageCircle, Send, ArrowRight, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -10,6 +10,42 @@ import { z } from "zod";
 import { fadeInUp, staggerContainer, buttonGlow, smoothFadeUp } from "@/utils/animations";
 import Magnetic from "@/components/ui/magnetic";
 import TextReveal from "@/components/ui/text-reveal";
+
+// ─── Google Form Configuration ───────────────────────────────────────────────
+const GOOGLE_FORM_ID = "1FAIpQLSdxB5xE0SShal0HfzijOhze1RtZB-mDBZewFbnWNJ3QzGf7fQ";
+const GOOGLE_FORM_FIELDS = {
+  name: "entry.628056361",          // Full Name
+  email: "entry.187930539",         // Email Address
+  organization: "entry.356924468",  // Organization
+  message: "entry.2013073021",      // Project Details / Message
+};
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Submits form data to a Google Form endpoint.
+ * Uses no-cors mode because Google Forms doesn't return CORS headers.
+ */
+async function submitToGoogleForm(data: {
+  name: string;
+  email: string;
+  organization: string;
+  message: string;
+}) {
+  const formData = new FormData();
+  formData.append(GOOGLE_FORM_FIELDS.name, data.name);
+  formData.append(GOOGLE_FORM_FIELDS.email, data.email);
+  formData.append(GOOGLE_FORM_FIELDS.organization, data.organization || "");
+  formData.append(GOOGLE_FORM_FIELDS.message, data.message);
+
+  await fetch(
+    `https://docs.google.com/forms/d/e/${GOOGLE_FORM_ID}/formResponse`,
+    {
+      method: "POST",
+      body: formData,
+      mode: "no-cors", // Google Forms doesn't support CORS
+    }
+  );
+}
 
 const contactSchema = z.object({
   name: z.string().trim().min(1, "Name is required").max(100),
@@ -21,10 +57,32 @@ const contactSchema = z.object({
 const Contact = () => {
   const { toast } = useToast();
   const [form, setForm] = useState({ name: "", email: "", organization: "", message: "" });
+  const [hp, setHp] = useState(""); // Honeypot field (anti-spam)
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    // 1. Honeypot check: If bot fills this hidden field, silently "succeed" but don't submit.
+    if (hp) {
+      setForm({ name: "", email: "", organization: "", message: "" });
+      setHp("");
+      toast({ title: "Message Sent ✓" });
+      return;
+    }
+
+    // 2. Rate limiting (5 mins)
+    const lastSub = localStorage.getItem("contact_last_sub");
+    if (lastSub && Date.now() - parseInt(lastSub) < 300000) {
+      toast({
+        title: "Slow down",
+        description: "Please wait a few minutes before sending another message.",
+        variant: "destructive",
+      });
+      return;
+    }
+
     const result = contactSchema.safeParse(form);
     if (!result.success) {
       const fieldErrors: Record<string, string> = {};
@@ -34,9 +92,27 @@ const Contact = () => {
       setErrors(fieldErrors);
       return;
     }
+
     setErrors({});
-    toast({ title: "Message Sent", description: "We'll get back to you within 24 hours." });
-    setForm({ name: "", email: "", organization: "", message: "" });
+    setIsSubmitting(true);
+
+    try {
+      await submitToGoogleForm(form);
+      localStorage.setItem("contact_last_sub", Date.now().toString());
+      toast({
+        title: "Message Sent ✓",
+        description: "Thank you! We'll get back to you within 24 hours.",
+      });
+      setForm({ name: "", email: "", organization: "", message: "" });
+    } catch {
+      toast({
+        title: "Something went wrong",
+        description: "Please try again or contact us directly via email.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const update = (field: string, value: string) => {
@@ -78,8 +154,8 @@ const Contact = () => {
               <div className="space-y-5">
                 {[
                   { icon: Mail, label: "Email", value: "hello@appforgex.com", href: "mailto:hello@appforgex.com" },
-                  { icon: MessageCircle, label: "WhatsApp", value: "Chat with us directly", href: "https://wa.me/1234567890" },
-                  { icon: Phone, label: "Phone", value: "+1 (234) 567-890", href: null },
+                  { icon: MessageCircle, label: "WhatsApp", value: "Chat with us directly", href: "https://wa.me/+250794500945" },
+                  { icon: Phone, label: "Phone", value: "+250794500945", href: "tel:+250794500945" },
                   { icon: MapPin, label: "Location", value: "Serving clients globally", href: null }
                 ].map((item, i) => (
                   <motion.div key={i} custom={i + 2} variants={smoothFadeUp}>
@@ -116,7 +192,7 @@ const Contact = () => {
 
               <motion.div variants={fadeInUp} className="mt-8 p-4 rounded-lg border border-border bg-card">
                 <p className="text-xs text-muted-foreground leading-relaxed">
-                  🔒 Your information is secure and will only be used to respond to your inquiry. We never share your data with third parties.
+                  🔒 Your information is secure and submitted via Google Forms. We never share your data with third parties.
                 </p>
               </motion.div>
             </motion.div>
@@ -125,30 +201,48 @@ const Contact = () => {
             <motion.div variants={smoothFadeUp} custom={1} className="relative">
               <div className="absolute -inset-4 bg-primary/5 rounded-xl blur-2xl -z-10" />
               <form onSubmit={handleSubmit} className="p-6 md:p-8 rounded-xl border border-border bg-card space-y-5 shadow-lg">
+                {/* Honeypot field (hidden from users) */}
+                <div className="hidden" aria-hidden="true">
+                  <input type="text" value={hp} onChange={(e) => setHp(e.target.value)} tabIndex={-1} autoComplete="off" />
+                </div>
                 <div>
                   <label htmlFor="name" className="text-sm font-medium text-foreground block mb-1.5">Full Name *</label>
-                  <Input id="name" value={form.name} onChange={(e) => update("name", e.target.value)} placeholder="John Smith" className="bg-secondary border-border focus:ring-1 focus:ring-primary/20 transition-all duration-300" />
+                  <Input id="name" value={form.name} onChange={(e) => update("name", e.target.value)} placeholder="John Smith" disabled={isSubmitting} className="bg-secondary border-border focus:ring-1 focus:ring-primary/20 transition-all duration-300" />
                   {errors.name && <p className="text-xs text-destructive mt-1">{errors.name}</p>}
                 </div>
                 <div>
                   <label htmlFor="email" className="text-sm font-medium text-foreground block mb-1.5">Email Address *</label>
-                  <Input id="email" type="email" value={form.email} onChange={(e) => update("email", e.target.value)} placeholder="john@company.com" className="bg-secondary border-border focus:ring-1 focus:ring-primary/20 transition-all duration-300" />
+                  <Input id="email" type="email" value={form.email} onChange={(e) => update("email", e.target.value)} placeholder="john@company.com" disabled={isSubmitting} className="bg-secondary border-border focus:ring-1 focus:ring-primary/20 transition-all duration-300" />
                   {errors.email && <p className="text-xs text-destructive mt-1">{errors.email}</p>}
                 </div>
                 <div>
                   <label htmlFor="org" className="text-sm font-medium text-foreground block mb-1.5">Organization</label>
-                  <Input id="org" value={form.organization} onChange={(e) => update("organization", e.target.value)} placeholder="Your Company" className="bg-secondary border-border focus:ring-1 focus:ring-primary/20 transition-all duration-300" />
+                  <Input id="org" value={form.organization} onChange={(e) => update("organization", e.target.value)} placeholder="Your Company" disabled={isSubmitting} className="bg-secondary border-border focus:ring-1 focus:ring-primary/20 transition-all duration-300" />
                 </div>
                 <div>
                   <label htmlFor="message" className="text-sm font-medium text-foreground block mb-1.5">Project Details *</label>
-                  <Textarea id="message" rows={5} value={form.message} onChange={(e) => update("message", e.target.value)} placeholder="Tell us about your project, goals, and timeline..." className="bg-secondary border-border resize-none focus:ring-1 focus:ring-primary/20 transition-all duration-300" />
+                  <Textarea id="message" rows={5} value={form.message} onChange={(e) => update("message", e.target.value)} placeholder="Tell us about your project, goals, and timeline..." disabled={isSubmitting} className="bg-secondary border-border resize-none focus:ring-1 focus:ring-primary/20 transition-all duration-300" />
                   {errors.message && <p className="text-xs text-destructive mt-1">{errors.message}</p>}
                 </div>
 
                 <Magnetic strength={40}>
                   <motion.div whileHover="hover" whileTap="tap" variants={buttonGlow} className="w-full">
-                    <Button type="submit" size="lg" className="w-full gradient-primary text-primary-foreground border-0 hover:opacity-90 font-medium tracking-wide">
-                      Send Message <Send className="ml-2" size={16} />
+                    <Button
+                      type="submit"
+                      size="lg"
+                      disabled={isSubmitting}
+                      className="w-full gradient-primary text-primary-foreground border-0 hover:opacity-90 font-medium tracking-wide disabled:opacity-70"
+                    >
+                      {isSubmitting ? (
+                        <>
+                          <Loader2 className="mr-2 animate-spin" size={16} />
+                          Sending...
+                        </>
+                      ) : (
+                        <>
+                          Send Message <Send className="ml-2" size={16} />
+                        </>
+                      )}
                     </Button>
                   </motion.div>
                 </Magnetic>
