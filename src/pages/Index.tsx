@@ -74,7 +74,7 @@ const Index = () => {
                 Enterprise Digital Solutions
               </motion.div>
               <div className="mb-10 lg:mb-14">
-                <TextReveal className="text-5xl md:text-7xl lg:text-8xl font-black tracking-tight text-foreground mb-6 leading-[1.05]">
+                <TextReveal className="text-5xl md:text-7xl lg:text-8xl font-black tracking-tight text-foreground mb-4 leading-tight">
                   End-to-End
                 </TextReveal>
                 <motion.div
@@ -83,7 +83,7 @@ const Index = () => {
                   transition={{ delay: 1, duration: 0.8 }}
                   className="h-1.5 bg-gradient-to-r from-primary to-cyan rounded-full mb-8"
                 />
-                <TextReveal delay={0.5} className="text-5xl md:text-7xl lg:text-8xl font-black tracking-tight text-gradient leading-[1.05]">
+                <TextReveal delay={0.5} className="text-5xl md:text-7xl lg:text-8xl font-black tracking-tight text-gradient leading-tight">
                   Digital Excellence
                 </TextReveal>
               </div>

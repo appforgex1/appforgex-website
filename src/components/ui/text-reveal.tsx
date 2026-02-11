@@ -22,7 +22,7 @@ export default function TextReveal({ children, className = "", delay = 0 }: Text
                 animate={isInView ? "visible" : "hidden"}
                 custom={delay}
                 variants={textReveal}
-                className="inline-block"
+                className="inline-block pb-2"
             >
                 {children}
             </motion.div>

@@ -28,10 +28,10 @@ const About = () => (
         >
           <motion.span variants={smoothFadeUp} className="text-xs font-bold tracking-widest uppercase text-primary mb-6 block">About AppforgeX</motion.span>
           <div className="mb-10 lg:mb-12">
-            <TextReveal className="text-4xl md:text-5xl lg:text-8xl font-black text-foreground leading-[1.1]">
+            <TextReveal className="text-4xl md:text-5xl lg:text-8xl font-black text-foreground leading-tight">
               Your Long-Term
             </TextReveal>
-            <TextReveal delay={0.5} className="text-4xl md:text-5xl lg:text-8xl font-black text-gradient leading-[1.1]">
+            <TextReveal delay={0.5} className="text-4xl md:text-5xl lg:text-8xl font-black text-gradient leading-tight">
               Technology Partner
             </TextReveal>
           </div>
