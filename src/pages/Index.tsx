@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
-import { Shield, Zap, Globe, Code, Smartphone, Brain, Lock, Cloud, Database, Box, ArrowRight, CheckCircle2, Rocket, Layout } from "lucide-react";
+import { Shield, Zap, Globe, Code, Smartphone, Brain, Lock, Cloud, Database, Box, ArrowRight, CheckCircle2, Rocket, Layout, Play } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import SectionHeader from "@/components/shared/SectionHeader";
 import heroBg from "@/assets/hero-bg.jpg";
@@ -101,15 +101,85 @@ const Index = () => {
                   </Link>
                 </Magnetic>
                 <Magnetic strength={20}>
-                  <Link to="/services">
+                  <a href="https://forge-board-theta.vercel.app/" target="_blank" rel="noopener noreferrer">
                     <Button variant="outline" size="lg" className="h-14 px-8 text-base rounded-xl border-border hover:bg-secondary/50 transition-all font-medium backdrop-blur-sm">
-                      Explore Our Services
+                      <Play className="mr-2 h-4 w-4" /> See Live Demo
                     </Button>
-                  </Link>
+                  </a>
                 </Magnetic>
               </motion.div>
             </motion.div>
 
+          </div>
+        </div>
+      </section>
+
+      {/* ForgeBoard Demo Section */}
+      <section className="section-padding bg-gradient-to-b from-background to-secondary/20 relative overflow-hidden">
+        <div className="container mx-auto px-4 lg:px-8">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+            >
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-bold tracking-widest uppercase mb-6 border border-primary/20">
+                <Zap className="h-3 w-3" />
+                Demo Product
+              </div>
+              <h2 className="text-4xl md:text-5xl font-black text-foreground mb-6 leading-tight">
+                See What We Can Build: <span className="text-gradient">ForgeBoard</span>
+              </h2>
+              <p className="text-lg text-muted-foreground mb-8 leading-relaxed">
+                ForgeBoard is our flagship demo product showcasing the quality and capabilities AppforgeX delivers. It demonstrates real-time analytics, custom dashboards, and scalable architecture — the same level of excellence we bring to every client project.
+              </p>
+              <div className="flex flex-wrap gap-4 mb-8">
+                {[
+                  "Real-time Analytics",
+                  "Custom Dashboards", 
+                  "Data Visualization",
+                  "Scalable Architecture"
+                ].map((feature, i) => (
+                  <div key={i} className="flex items-center gap-2 px-4 py-2 rounded-full bg-secondary/50 text-sm font-medium">
+                    <CheckCircle2 className="h-4 w-4 text-primary" />
+                    {feature}
+                  </div>
+                ))}
+              </div>
+              <div className="flex flex-col sm:flex-row gap-4">
+                <a href="https://forge-board-theta.vercel.app/" target="_blank" rel="noopener noreferrer">
+                  <Button size="lg" className="h-12 px-6 rounded-xl font-semibold group">
+                    <Play className="mr-2 h-4 w-4" /> Launch Live Demo
+                  </Button>
+                </a>
+                <Link to="/contact">
+                  <Button variant="outline" size="lg" className="h-12 px-6 rounded-xl font-semibold">
+                    Request Custom Version
+                  </Button>
+                </Link>
+              </div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="relative"
+            >
+              <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-cyan/20 rounded-3xl blur-3xl" />
+              <div className="relative rounded-2xl overflow-hidden border border-white/10 shadow-2xl">
+                <img 
+                  src="/assets/images/forgeboard.png" 
+                  alt="ForgeBoard Demo" 
+                  className="w-full h-auto"
+                />
+              </div>
+              <div className="absolute -bottom-4 -right-4 px-4 py-2 rounded-lg bg-primary text-primary-foreground text-sm font-bold">
+                Powered by AppforgeX
+              </div>
+            </motion.div>
           </div>
         </div>
       </section>
