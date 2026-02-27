@@ -171,7 +171,7 @@ const Index = () => {
               <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-cyan/20 rounded-3xl blur-3xl" />
               <div className="relative rounded-2xl overflow-hidden border border-white/10 shadow-2xl">
                 <img 
-                  src="/assets/images/forgeboard.png" 
+                  src="/assets/images/forge-board.png" 
                   alt="ForgeBoard Demo" 
                   className="w-full h-auto"
                 />
